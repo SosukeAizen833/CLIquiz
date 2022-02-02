@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import inquirer from 'inquirer';
 import gradient from 'gradient-string';
 import chalkAnimation from 'chalk-animation';
-import {createSpinner} from 'nanospinner'
+import {createSpinner} from 'nanospinner';
 
 let playerName = 'player';
 const sleep = (ms = 2000) => {
@@ -15,7 +15,7 @@ async function welcome(){
         'Who wants to be a millionaire \n'
     );
 
-    await sleep();
+    await sleep(4000);
     rainbowTitle.stop();
 
     console.log()
@@ -51,9 +51,25 @@ async function q1(){
 
 async function q2(){
     const answers = await inquirer.prompt({
-        name: 'q_1',
+        name: 'q_2',
         type: 'list',
-        message: "Who has the most runs in T20I Cricket?",
+        message: "Who has the most runs in Womens Cricket?",
+        choices: [
+            'Meg Lanning',
+            'Mithali Raj',
+            'SW Bates',
+            'Heather Knight',
+        ],
+
+    });
+    return handleAnswer(answers.q_2 == "SW Bates")
+}
+
+async function q3(){
+    const answers = await inquirer.prompt({
+        name: 'q_3',
+        type: 'list',
+        message: "Who is the highest run scorer in T20Is?",
         choices: [
             'Rohit Sharma',
             'Babar Azam',
@@ -62,21 +78,25 @@ async function q2(){
         ],
 
     });
-    return handleAnswer(answers.q_1 == "Martin Guptill")
+    return handleAnswer(answers.q_3 == "Martin Guptill")
 }
 
 async function handleAnswer(isCorrect) {
-    const spinner = createSpinner('Checking........').start();
+    const spinner = createSpinner('Checking........');
+    spinner.start();
     await sleep();
 
     if(isCorrect){
-        spinner.success({text: `Congrats! Thats the right answrer3`})
+        spinner.success({text: `Congrats! ${playerName} Thats the right answrer3`})
     }else{
         spinner.error({text: `Thats a wrong answer you idiot`});
         process.exit(1);
     }
 }
+
 await welcome();
 await askName();
 await q1();
 await q2();
+await q3();
+console.log(gradient('cyan', 'pink')('YOU WIN!!!'));
